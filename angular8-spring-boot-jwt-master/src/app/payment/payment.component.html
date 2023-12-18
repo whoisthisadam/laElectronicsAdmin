@@ -1,0 +1,27 @@
+<form [formGroup]="form" (ngSubmit)="payment()">
+  <div>
+    <mat-card class="container">
+
+      <div class="container" style="width: 80%;">
+
+        <mat-form-field>
+          <input matInput placeholder="Card Number" formControlName="cardNumber">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Cardholder" formControlName="cardHolder">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="CVV" formControlName="cvv">
+        </mat-form-field>
+      </div>
+
+      <button mat-flat-button color="primary" [disabled]="!form.valid" type="submit">
+        Pay({{this.cost}})
+      </button>
+
+    </mat-card>
+  </div>
+</form>
+

@@ -1,0 +1,62 @@
+<form [formGroup]="form" (ngSubmit)="register()">
+  <div>
+    <mat-card class="container">
+
+      <div class="container" style="width: 80%;">
+        <mat-form-field>
+          <input matInput placeholder="First Name" formControlName="firstName">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Last Name" formControlName="lastName">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Mobile Phone" formControlName="mobilePhone">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Email" formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Login" formControlName="login">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Password" formControlName="password" type="password">
+        </mat-form-field>
+
+        <h3>Address</h3>
+
+        <mat-form-field>
+          <input matInput placeholder="Building" formControlName="lineOne">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Street" formControlName="lineTwo">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="City" formControlName="city">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Province" formControlName="province">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Country" formControlName="country">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Postal/ZIP code" formControlName="postCode">
+        </mat-form-field>
+
+      </div>
+
+      <button mat-flat-button color="primary" [disabled]="!form.valid" type="submit">Sign up</button>
+
+    </mat-card>
+  </div>
+</form>

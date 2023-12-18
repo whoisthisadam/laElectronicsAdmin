@@ -1,0 +1,28 @@
+<h2>Add new product(ONLY FOR ADMIN)</h2>
+<form [formGroup]="form" (ngSubmit)="addProduct()">
+  <div>
+    <mat-card class="container">
+
+      <div class="container" style="width: 80%;">
+        <mat-form-field>
+          <input matInput placeholder="Category" formControlName="category">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Brand" formControlName="brand">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Name" formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="Price" formControlName="price">
+        </mat-form-field>
+
+      </div>
+      <button mat-flat-button color="primary" [disabled]="!form.valid" type="submit">Add product</button>
+      <p style="background-color: red" *ngIf="error">{{this.error}}</p>
+    </mat-card>
+  </div>
+</form>

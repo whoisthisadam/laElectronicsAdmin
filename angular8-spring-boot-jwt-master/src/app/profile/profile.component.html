@@ -1,0 +1,16 @@
+<div *ngIf="user as user" class="main-div">
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>{{user.firstName}}</mat-card-title>
+      <mat-card-title>{{user.lastName}}</mat-card-title>
+      <mat-card-subtitle>{{user.email}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Contact number: {{user.mobilePhone}}</p>
+      <p>Login: {{user.login}}</p>
+      <p>Role: {{user.roleName}}</p>
+    </mat-card-content>
+    <button (click)="this.router.navigate(['/edit-profile'])">Edit profile</button>
+    <button (click)="delete()" style="background-color: red">Delete profile</button>
+  </mat-card>
+</div>
