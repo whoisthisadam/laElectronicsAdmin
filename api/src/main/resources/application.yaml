@@ -16,7 +16,6 @@ spring:
     defer-datasource-initialization: false
     properties:
       hibernate:
-        default_schema: boots
         format_sql: 'false'
   sql:
     init:

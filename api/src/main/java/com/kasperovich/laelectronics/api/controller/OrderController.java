@@ -7,6 +7,7 @@ import com.kasperovich.laelectronics.api.mapping.converters.order.OrderCreateCon
 import com.kasperovich.laelectronics.api.mapping.converters.order.OrderGetConverter;
 import com.kasperovich.laelectronics.api.mapping.converters.order.OrderUpdateConverter;
 import com.kasperovich.laelectronics.exception.NotDeletableStatusException;
+import com.kasperovich.laelectronics.exception.PreconditionException;
 import com.kasperovich.laelectronics.models.Order;
 import com.kasperovich.laelectronics.service.order.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,7 +68,7 @@ public class OrderController {
     )
     @PostMapping
     @Transactional
-    public ResponseEntity<Map<String, OrderGetDto>> create(@RequestBody OrderCreateDto orderCreateDto) {
+    public ResponseEntity<Map<String, OrderGetDto>> create(@RequestBody OrderCreateDto orderCreateDto) throws PreconditionException {
         Order order = orderCreateConverter.convert(orderCreateDto);
         orderService.createOrder(order);
         return new ResponseEntity<>(Collections.singletonMap("New order:", orderGetConverter.convert(order)), HttpStatus.CREATED);

@@ -2,12 +2,16 @@ package com.kasperovich.laelectronics.service.order;
 
 import com.kasperovich.laelectronics.enums.OrderStatus;
 import com.kasperovich.laelectronics.enums.PaymentStatus;
+import com.kasperovich.laelectronics.enums.ProductStatus;
 import com.kasperovich.laelectronics.exception.NotDeletableStatusException;
+import com.kasperovich.laelectronics.exception.PreconditionException;
 import com.kasperovich.laelectronics.models.Discount;
 import com.kasperovich.laelectronics.models.Edit;
 import com.kasperovich.laelectronics.models.Order;
+import com.kasperovich.laelectronics.models.Product;
 import com.kasperovich.laelectronics.repository.OrderRepository;
 import com.kasperovich.laelectronics.repository.PaymentRepository;
+import com.kasperovich.laelectronics.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +43,10 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Order createOrder(@Valid Order order) {
+    public Order createOrder(@Valid Order order) throws PreconditionException {
+        if(order.getProducts().stream().anyMatch(product -> product.getStatus().equals(ProductStatus.OUT_OF_STOCK)|| product.getIsDeleted())){
+            throw new PreconditionException("Cannot create order with these products: Product could be deleted or out of stock");
+        }
         if(order.getPayment().getStatus()==PaymentStatus.NOT_PAID){
             order.setOrderStatus(OrderStatus.NOT_STARTED);
         }

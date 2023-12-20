@@ -2,6 +2,7 @@ package com.kasperovich.laelectronics.api.controller.exceptionHandler;
 
 import com.kasperovich.laelectronics.exception.BadPasswordException;
 import com.kasperovich.laelectronics.exception.NotDeletableStatusException;
+import com.kasperovich.laelectronics.exception.PreconditionException;
 import com.kasperovich.laelectronics.util.UUIDGenerator;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -103,6 +104,18 @@ DefaultExceptionHandler {
                         .e(e.getClass().toString())
                         .build();
         return new ResponseEntity<>(Collections.singletonMap("Error:",error),HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(PreconditionException.class)
+    public ResponseEntity<Object> handlerPrecondition(PreconditionException e) {
+        ErrorContainer error =
+                ErrorContainer.builder()
+                        .exceptionId(UUIDGenerator.generateUUID())
+                        .errorCode(7)
+                        .errorMessage(e.getMessage())
+                        .e(e.getClass().toString())
+                        .build();
+        return new ResponseEntity<>(Collections.singletonMap("Error:",error),HttpStatus.PRECONDITION_FAILED);
     }
 
 }
