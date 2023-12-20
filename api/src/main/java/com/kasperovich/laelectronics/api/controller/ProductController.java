@@ -184,7 +184,7 @@ public class ProductController {
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation =ProductGetDto.class))))
             })
-    @PatchMapping("/product")
+    @GetMapping("/product")
     public ResponseEntity<ProductGetDto>findProductById(@RequestParam(value = "ID") String id) {
         Product product=productRepository.findProductByIdAndIsDeleted(Long.parseLong(id), false)
                 .orElseThrow(()->new EntityNotFoundException("Product with this ID does not exist"));
