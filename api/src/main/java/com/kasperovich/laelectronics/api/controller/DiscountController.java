@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @Validated
 @RequestMapping("/data/discounts")
 @RequiredArgsConstructor
-@Tag(name = "discounts")
+@Tag(name = "Discounts")
 public class DiscountController {
 
     private final DiscountService discountService;

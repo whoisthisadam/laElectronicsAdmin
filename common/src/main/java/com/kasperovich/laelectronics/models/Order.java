@@ -56,5 +56,10 @@ public class Order {
     Set<Product>products;
 
 
+    @OneToOne
+    @JoinColumn(name = "discount_id")
+    Discount orderDiscount;
+
+
 
 }

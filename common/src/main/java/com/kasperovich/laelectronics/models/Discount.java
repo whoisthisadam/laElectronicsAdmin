@@ -49,4 +49,7 @@ public class Discount {
 
     @OneToMany(mappedBy = "productDiscount", fetch = FetchType.EAGER)
     Set<Product>products;
+
+    @OneToOne(mappedBy = "orderDiscount", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    Order order;
 }

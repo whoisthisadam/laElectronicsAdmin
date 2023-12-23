@@ -6,9 +6,11 @@ import com.kasperovich.laelectronics.api.dto.order.OrderUpdateDto;
 import com.kasperovich.laelectronics.api.mapping.converters.order.OrderCreateConverter;
 import com.kasperovich.laelectronics.api.mapping.converters.order.OrderGetConverter;
 import com.kasperovich.laelectronics.api.mapping.converters.order.OrderUpdateConverter;
+import com.kasperovich.laelectronics.enums.OrderStatus;
 import com.kasperovich.laelectronics.exception.NotDeletableStatusException;
 import com.kasperovich.laelectronics.exception.PreconditionException;
 import com.kasperovich.laelectronics.models.Order;
+import com.kasperovich.laelectronics.repository.OrderRepository;
 import com.kasperovich.laelectronics.service.order.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -52,6 +54,8 @@ public class OrderController {
 
     OrderUpdateConverter orderUpdateConverter;
 
+    OrderRepository orderRepository;
+
 
     @Operation(
             summary = "Create order",
@@ -78,7 +82,7 @@ public class OrderController {
             summary = "Find all orders(Admin only)",
             responses = {
                     @ApiResponse(
-                          responseCode = "200",
+                            responseCode = "200",
                             description = "Found",
                             content = {
                                     @Content(
@@ -98,6 +102,59 @@ public class OrderController {
     public ResponseEntity<List<OrderGetDto>> findAll() {
         List<OrderGetDto> list = orderService.findAll().stream().map(orderGetConverter::convert).collect(Collectors.toList());
         return ResponseEntity.ok(list);
+    }
+
+    @Operation(
+            summary = "Find all pending orders(Admin&Moderator only)",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Found",
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = OrderGetDto.class)))
+                            })
+            }
+            , parameters = {
+            @Parameter(
+                    in = ParameterIn.HEADER,
+                    name = "X-Auth-Token",
+                    required = true,
+                    description = "JWT Token, can be generated in auth controller /auth")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @GetMapping
+    public ResponseEntity<List<OrderGetDto>> findAllPending() {
+        List<OrderGetDto> list = orderRepository.findAllByOrderStatus(OrderStatus.IN_PROGRESS).stream().map(orderGetConverter::convert).collect(Collectors.toList());
+        return ResponseEntity.ok(list);
+    }
+
+    @Operation(
+            summary = "Find order by id(Admin&Moderator only)",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Found",
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = OrderGetDto.class)))
+                            })
+            }
+            , parameters = {
+            @Parameter(
+                    in = ParameterIn.HEADER,
+                    name = "X-Auth-Token",
+                    required = true,
+                    description = "JWT Token, can be generated in auth controller /auth")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderGetDto> findById(@PathVariable String id) {
+        Order order = orderService.findById(id);
+        OrderGetDto orderGetDto = orderGetConverter.convert(order);
+        return ResponseEntity.ok(orderGetDto);
     }
 
     @Operation(
@@ -153,6 +210,33 @@ public class OrderController {
     public ResponseEntity<String> deleteOrder(@RequestParam String Id) throws NotDeletableStatusException {
         orderService.deleteOrder(Long.parseLong(Id));
         return ResponseEntity.ok("Order with ID " + Id + " deleted");
+    }
+
+
+    @Operation(
+            summary = "Approve order(Admin&Moderator only)",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Approved",
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = String.class)))
+                            })
+            }
+            , parameters = {
+            @Parameter(
+                    in = ParameterIn.HEADER,
+                    name = "X-Auth-Token",
+                    required = true,
+                    description = "JWT Token, can be generated in auth controller /auth")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @PatchMapping("/approve/{id}")
+    public ResponseEntity<String> approveOrder(@PathVariable String id, @RequestParam(required = false, defaultValue = "")String discount) throws PreconditionException {
+        orderService.approveOrder(id, discount);
+        return ResponseEntity.ok("Order with ID " + id + " is completed");
     }
 
 

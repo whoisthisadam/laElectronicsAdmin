@@ -16,6 +16,8 @@ public class OrderGetDto {
 
     Long id;
 
+    String userEmail;
+
     Long userId;
 
     Long total;

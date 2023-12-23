@@ -31,6 +31,7 @@ public class OrderGetConverter implements Converter<Order, OrderGetDto> {
         OrderGetDto orderGetDto = new OrderGetDto();
         orderGetDto.setId(order.getId());
         orderGetDto.setUserId(order.getUser().getId());
+        orderGetDto.setUserEmail(order.getUser().getEmail());
         orderGetDto.setPayment(paymentMapper.toDto(order.getPayment()));
         orderGetDto.setTotal(order.getTotal());
         orderGetDto.setStatus(order.getOrderStatus());
