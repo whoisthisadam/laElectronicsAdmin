@@ -124,7 +124,7 @@ public class OrderController {
                     description = "JWT Token, can be generated in auth controller /auth")
     })
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
-    @GetMapping
+    @GetMapping("/pending")
     public ResponseEntity<List<OrderGetDto>> findAllPending() {
         List<OrderGetDto> list = orderRepository.findAllByOrderStatus(OrderStatus.IN_PROGRESS).stream().map(orderGetConverter::convert).collect(Collectors.toList());
         return ResponseEntity.ok(list);
