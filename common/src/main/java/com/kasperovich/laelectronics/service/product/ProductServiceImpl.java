@@ -23,7 +23,10 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     @Override
     public List<Product> findAll() {
-        return productRepository.findAll().stream().filter(x->!x.getIsDeleted()).collect(Collectors.toList());
+        List<Product> products = productRepository.findAll()
+//                .stream().filter(x->!x.getIsDeleted()).collect(Collectors.toList())
+        ;
+        return products;
     }
 
     @Override

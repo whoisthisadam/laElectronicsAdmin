@@ -4,6 +4,7 @@ import com.kasperovich.laelectronics.api.dto.product.ProductCreateDto;
 import com.kasperovich.laelectronics.models.Category;
 import com.kasperovich.laelectronics.models.Product;
 import com.kasperovich.laelectronics.repository.CategoryRepository;
+import com.kasperovich.laelectronics.repository.ManufacturerRepository;
 import com.kasperovich.laelectronics.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AccessLevel;
@@ -22,6 +23,8 @@ public class ProductUpdateConverter implements Converter<ProductCreateDto, Produ
     ProductRepository productRepository;
 
     CategoryRepository categoryRepository;
+
+    ManufacturerRepository manufacturerRepository;
 
 
     @Override
@@ -42,9 +45,9 @@ public class ProductUpdateConverter implements Converter<ProductCreateDto, Produ
         product.setName(
                 Optional.ofNullable(productCreateDto.getName()).orElse(product.getName())
         );
-        product.setBrand(
-                Optional.ofNullable(
-                        productCreateDto.getBrand()).orElse(product.getBrand())
+        Optional.ofNullable(productCreateDto.getManufacturerName()).ifPresentOrElse(name->
+            product.setManufacturer(manufacturerRepository.findByName(name).orElseThrow(()->new EntityNotFoundException("Invalid manufacturer name"))),
+                ()-> product.setManufacturer(product.getManufacturer())
         );
         product.setPrice(
                 Optional.ofNullable(productCreateDto.getPrice()).orElse(product.getPrice())

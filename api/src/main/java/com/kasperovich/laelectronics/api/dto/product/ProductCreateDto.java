@@ -25,10 +25,10 @@ public class ProductCreateDto {
 
     String name;
 
-    String brand;
-
     Long price;
 
     ProductStatus status;
+
+    String manufacturerName;
 
 }

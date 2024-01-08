@@ -26,7 +26,7 @@ public class ProductGetDto {
 
     String name;
 
-    String brand;
+    String manufacturerName;
 
     Long price;
 

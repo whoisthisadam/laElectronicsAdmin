@@ -11,6 +11,7 @@ import com.kasperovich.laelectronics.exception.NotDeletableStatusException;
 import com.kasperovich.laelectronics.models.Category;
 import com.kasperovich.laelectronics.models.Product;
 import com.kasperovich.laelectronics.repository.CategoryRepository;
+import com.kasperovich.laelectronics.repository.ManufacturerRepository;
 import com.kasperovich.laelectronics.repository.ProductRepository;
 import com.kasperovich.laelectronics.service.product.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,6 +58,8 @@ public class ProductController {
 
     ProductRepository productRepository;
 
+    ManufacturerRepository manufacturerRepository;
+
     @Operation(
             summary = "Gets all products",
             responses = {
@@ -74,8 +77,8 @@ public class ProductController {
         List<ProductGetDto>dtos=new ArrayList<>(productListMapper.toDto(entites));
         dtos.forEach(x->{
             Optional<Category> category=Optional.ofNullable(entites.get(dtos.indexOf(x)).getCategory());
-            //TODO remove optionality when all products will be assigned to categories
             category.ifPresent(val->x.getCategory().setName(val.getCategoryName()));
+            x.setManufacturerName(entites.get(dtos.indexOf(x)).getManufacturer().getName());
         });
         return ResponseEntity.ok(dtos);
     }
@@ -104,6 +107,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Map<String, ProductGetDto> >createProduct(@RequestBody ProductCreateDto productCreateDto){
         Product product=productMapper.toEntity(productCreateDto);
+        product.setManufacturer(manufacturerRepository.findByName(productCreateDto.getManufacturerName()).orElseThrow(()->new EntityNotFoundException("Invalid manufacturer name")));
         String catName=productCreateDto.getCategory().getName();
         product.setCategory(
                 categoryRepository.findCategoryByCategoryName(catName).orElseThrow(()->new EntityNotFoundException("Category "+catName+" not found"))
@@ -192,7 +196,7 @@ public class ProductController {
                 new CategoryDto(product.getCategory().getCategoryName()),
                 product.getId(),
                 product.getName(),
-                product.getBrand(),
+                product.getManufacturer().getName(),
                 product.getPrice()
         );
         return ResponseEntity.ok(productGetDto);
