@@ -2,6 +2,7 @@ package com.kasperovich.laelectronics.api.mapping.converters.product;
 
 import com.kasperovich.laelectronics.api.dto.product.ProductCreateDto;
 import com.kasperovich.laelectronics.models.Category;
+import com.kasperovich.laelectronics.models.Manufacturer;
 import com.kasperovich.laelectronics.models.Product;
 import com.kasperovich.laelectronics.repository.CategoryRepository;
 import com.kasperovich.laelectronics.repository.ManufacturerRepository;
@@ -46,7 +47,11 @@ public class ProductUpdateConverter implements Converter<ProductCreateDto, Produ
                 Optional.ofNullable(productCreateDto.getName()).orElse(product.getName())
         );
         Optional.ofNullable(productCreateDto.getManufacturerName()).ifPresentOrElse(name->
-            product.setManufacturer(manufacturerRepository.findByName(name).orElseThrow(()->new EntityNotFoundException("Invalid manufacturer name"))),
+            product.setManufacturer(manufacturerRepository.findByName(name).orElseGet(()->{
+                Manufacturer manufacturer = Manufacturer.builder().name(name).build();
+                manufacturerRepository.save(manufacturer);
+                return manufacturer;
+            })),
                 ()-> product.setManufacturer(product.getManufacturer())
         );
         product.setPrice(
