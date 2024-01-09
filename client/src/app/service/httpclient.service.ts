@@ -9,7 +9,7 @@ export class Product {
     public category: Category,
     public name: string,
     public price: number,
-    public brand: string
+    public manufacturerName: string
   ) {}
 }
 

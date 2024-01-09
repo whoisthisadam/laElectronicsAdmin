@@ -25,7 +25,10 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.httpClientService
       .getProducts()
-      .subscribe(response => this.handleSuccessfulResponse(response));
+      .subscribe(response => {
+        console.log(response);
+        this.handleSuccessfulResponse(response);
+      });
   }
 
   handleSuccessfulResponse(response) {
