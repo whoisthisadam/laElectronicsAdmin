@@ -9,6 +9,7 @@ import com.kasperovich.laelectronics.api.mapping.mappers.ProductListMapper;
 import com.kasperovich.laelectronics.api.mapping.mappers.ProductMapper;
 import com.kasperovich.laelectronics.exception.NotDeletableStatusException;
 import com.kasperovich.laelectronics.models.Category;
+import com.kasperovich.laelectronics.models.Manufacturer;
 import com.kasperovich.laelectronics.models.Product;
 import com.kasperovich.laelectronics.repository.CategoryRepository;
 import com.kasperovich.laelectronics.repository.ManufacturerRepository;
@@ -107,7 +108,11 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Map<String, ProductGetDto> >createProduct(@RequestBody ProductCreateDto productCreateDto){
         Product product=productMapper.toEntity(productCreateDto);
-        product.setManufacturer(manufacturerRepository.findByName(productCreateDto.getManufacturerName()).orElseThrow(()->new EntityNotFoundException("Invalid manufacturer name")));
+        product.setManufacturer(manufacturerRepository.findByName(productCreateDto.getManufacturerName()).orElseGet(()->{
+            Manufacturer manufacturer=Manufacturer.builder().name(productCreateDto.getManufacturerName()).build();
+            manufacturerRepository.save(manufacturer);
+            return manufacturer;
+        }));
         String catName=productCreateDto.getCategory().getName();
         product.setCategory(
                 categoryRepository.findCategoryByCategoryName(catName).orElseThrow(()->new EntityNotFoundException("Category "+catName+" not found"))
