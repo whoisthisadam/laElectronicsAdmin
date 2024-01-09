@@ -1,7 +1,17 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {UserCreateDto} from '../registration/registration.component';
 import {OrderCreateDto} from '../shopping-cart/shopping-cart.component';
+
+export class Order {
+  constructor(
+    public id: number,
+    public userEmail: string,
+    public userId: number,
+    public total: number,
+    public products: Product[]
+  ) {}
+}
 
 export class Product {
   constructor(
@@ -100,6 +110,10 @@ export class HttpClientService {
     return this.httpClient.patch('http://localhost:8080/data/users/delete?id='
       + id, {}
     );
+  }
+
+  getPendingOrders() {
+    return this.httpClient.get<Order[]>('http://localhost:8080/data/orders/pending');
   }
 
 }

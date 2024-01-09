@@ -23,6 +23,8 @@ import { AddProductComponent } from './add-product/add-product.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { AllUsersComponent } from './all-users/all-users.component';
 import { MoreUserInfoComponent } from './more-user-info/more-user-info.component';
+import { PendingOrdersComponent } from './pending-orders/pending-orders.component';
+import { OrderProductsComponent } from './order-products/order-products.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { MoreUserInfoComponent } from './more-user-info/more-user-info.component
     AddProductComponent,
     EditProductComponent,
     AllUsersComponent,
-    MoreUserInfoComponent
+    MoreUserInfoComponent,
+    PendingOrdersComponent,
+    OrderProductsComponent
   ],
   imports: [
     BrowserModule,
