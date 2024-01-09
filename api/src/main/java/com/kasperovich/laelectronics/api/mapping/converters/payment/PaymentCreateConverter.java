@@ -26,7 +26,7 @@ public class PaymentCreateConverter {
         payment.setProvider(paymentCreateDto.getProvider());
         payment.setStatus(PaymentStatus.IN_PROGRESS);
         payment.setEditData(new Edit(new Timestamp(new Date().getTime()), null));
-        payment.setStatus(PaymentStatus.values()[new Random().nextInt(4)]);
+        payment.setStatus(PaymentStatus.PAID);
         return payment;
     }
 
