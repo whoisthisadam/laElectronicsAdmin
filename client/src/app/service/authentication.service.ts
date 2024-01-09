@@ -22,6 +22,7 @@ export class AuthenticationService {
           let tokenStr = userData.token;
           sessionStorage.setItem('token', tokenStr);
           sessionStorage.setItem('userId', userData.userId);
+          sessionStorage.setItem('userRole', userData.role);
           return userData;
         })
       );
@@ -36,5 +37,10 @@ export class AuthenticationService {
   logOut() {
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('userRole');
+  }
+
+  isUserModerator() {
+    return sessionStorage.getItem('userRole').toString() === 'MODERATOR';
   }
 }

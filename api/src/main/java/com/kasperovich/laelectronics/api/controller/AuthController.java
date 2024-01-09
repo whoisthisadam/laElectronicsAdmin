@@ -3,6 +3,7 @@ package com.kasperovich.laelectronics.api.controller;
 import com.kasperovich.laelectronics.api.dto.auth.AuthRequest;
 import com.kasperovich.laelectronics.api.dto.auth.AuthResponse;
 import com.kasperovich.laelectronics.api.security.jwt.TokenUtils;
+import com.kasperovich.laelectronics.models.User;
 import com.kasperovich.laelectronics.repository.UserRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
@@ -43,16 +44,17 @@ public class AuthController {
         );
         SecurityContextHolder.getContext().setAuthentication(authenticate);
 
+        User user = userRepository.findUserByEmailAndIsDeleted(request.getEmail(), false)
+                .orElseThrow(EntityNotFoundException::new);
+
         /*Generate token with answer to user*/
         return ResponseEntity.ok(
                 AuthResponse
                         .builder()
                         .userNameOrEmail(request.getEmail())
                         .token(tokenUtils.generateToken(userProvider.loadUserByUsername(request.getEmail())))
-                        .userId(
-                                userRepository.findUserByEmailAndIsDeleted(request.getEmail(), false)
-                                .orElseThrow(EntityNotFoundException::new).getId()
-                        )
+                        .userId(user.getId())
+                        .role(user.getRole().getName().toString())
                         .build()
         );
     }
