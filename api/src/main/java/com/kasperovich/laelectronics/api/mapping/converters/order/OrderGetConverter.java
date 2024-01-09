@@ -39,8 +39,8 @@ public class OrderGetConverter implements Converter<Order, OrderGetDto> {
         List<ProductGetDto> productDtoList=productListMapper.toDto(products);
         productDtoList.forEach(x->{
             Optional<Category> category=Optional.ofNullable(products.get(productDtoList.indexOf(x)).getCategory());
-            //TODO remove optionality when all products will be assigned to categories
             category.ifPresent(val->x.getCategory().setName(val.getCategoryName()));
+            x.setManufacturerName(products.get(productDtoList.indexOf(x)).getManufacturer().getName());
         });
         orderGetDto.setProducts(productDtoList);
         return orderGetDto;
