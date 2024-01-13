@@ -1,5 +1,6 @@
 package com.kasperovich.laelectronics.api.controller;
 
+import com.kasperovich.laelectronics.api.dto.order.ApproveOrderResponse;
 import com.kasperovich.laelectronics.api.dto.order.OrderCreateDto;
 import com.kasperovich.laelectronics.api.dto.order.OrderGetDto;
 import com.kasperovich.laelectronics.api.dto.order.OrderUpdateDto;
@@ -235,9 +236,9 @@ public class OrderController {
     })
     @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     @PatchMapping("/approve/{id}")
-    public ResponseEntity<String> approveOrder(@PathVariable String id, @RequestParam(required = false, defaultValue = "")String discount) throws PreconditionException {
+    public ResponseEntity<ApproveOrderResponse> approveOrder(@PathVariable String id, @RequestParam(required = false, defaultValue = "")String discount) throws PreconditionException {
         orderService.approveOrder(id, discount);
-        return ResponseEntity.ok("Order with ID " + id + " is completed");
+        return ResponseEntity.ok(ApproveOrderResponse.builder().status("SUCCESS").id(id).build());
     }
 
 

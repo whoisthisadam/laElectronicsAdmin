@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {OrderCreateDto} from '../shopping-cart/shopping-cart.component';
 import {Product} from './httpclient.service';
@@ -20,9 +20,16 @@ export class OrderService {
   private product = new BehaviorSubject<boolean>(false);
   isProduct = this.product.asObservable();
 
+  private total = new BehaviorSubject<number>(0);
+  calculatedTotal = this.total.asObservable();
+
+  private id = new BehaviorSubject<number>(0);
+  selectedId = this.id.asObservable();
+
   setIsProduct(isProduct: boolean) {
     this.product.next(isProduct);
   }
+
   setOrder(order: OrderCreateDto) {
     this.order.next(order);
   }
@@ -35,5 +42,14 @@ export class OrderService {
     this.products.next(products);
   }
 
-  constructor() { }
+  setTotal(total: number) {
+    this.total.next(total);
+  }
+
+  setId(id: number) {
+    this.id.next(id);
+  }
+
+  constructor() {
+  }
 }

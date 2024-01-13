@@ -1,12 +1,23 @@
-
 <div class="wrapper">
   <div class="total" style="font-size: 200%">
-    <strong>Total: 3340</strong>
+    <strong>Total: {{this.total}}</strong>
   </div>
   <br>
   <div class="options">
-    <button class="btn-options">Add discount</button>
-    <button type="submit" class="btn-approve">Approve order</button>
+    <button class="btn-options" (click)="setFormVisible(true)">Add discount</button>
+    <button type="submit" class="btn-approve" (click)="approveOrder(id)">Approve order</button>
   </div>
+  <form [formGroup]="form" (ngSubmit)="applyDiscount()" *ngIf="isFormVisible">
+    <div>
+      <mat-card class="container">
+        <div class="container" style="width: 80%;">
+          <mat-form-field>
+            <input matInput placeholder="Value" formControlName="percent">
+          </mat-form-field>
+        </div>
+        <button mat-flat-button color="primary" [disabled]="!form.valid&&form.get('percent').value>100" type="submit">Apply discount</button>
+      </mat-card>
+    </div>
+  </form>
 </div>
 

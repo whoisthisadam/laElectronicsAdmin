@@ -104,9 +104,10 @@ public class OrderServiceImpl implements OrderService{
                             .creationDate(new Timestamp(new Date().getTime()))
                             .build())
                     .order(order)
+                    .isDeleted(false)
                     .build();
             discountRepository.save(discount);
-            order.setTotal(order.getTotal()-(order.getTotal()/100*Integer.parseInt(discountPercent)));
+            order.setTotal(Math.round(order.getTotal()-(order.getTotal().doubleValue()/100.0*Integer.parseInt(discountPercent))));
         }
         if(!order.getOrderStatus().equals(OrderStatus.IN_PROGRESS)){
             throw new PreconditionException("Invalid order state");

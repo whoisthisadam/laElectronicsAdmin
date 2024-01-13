@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {UserCreateDto} from '../registration/registration.component';
 import {OrderCreateDto} from '../shopping-cart/shopping-cart.component';
-import {environment} from "../../environments/environment";
+import {environment} from '../../environments/environment';
+import * as url from 'url';
 
 export class Order {
   constructor(
@@ -11,7 +12,8 @@ export class Order {
     public userId: number,
     public total: number,
     public products: Product[]
-  ) {}
+  ) {
+  }
 }
 
 export class Product {
@@ -21,7 +23,8 @@ export class Product {
     public name: string,
     public price: number,
     public manufacturerName: string
-  ) {}
+  ) {
+  }
 }
 
 export class User {
@@ -49,73 +52,83 @@ export class Credentials {
 export class Category {
   constructor(
     public name: string
-  ) {}
+  ) {
+  }
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+  }
 
 
   getProducts() {
-    return this.httpClient.get<Product[]>(environment.baseUrl+'/data/products');
+    return this.httpClient.get<Product[]>(environment.baseUrl + '/data/products');
   }
 
   public deleteProduct(id: number) {
     return this.httpClient.patch(
-      environment.baseUrl+'/data/products/delete?ID=' + id.toString(), {}
+      environment.baseUrl + '/data/products/delete?ID=' + id.toString(), {}
     );
   }
 
 
   getProfile() {
-    return this.httpClient.get(environment.baseUrl+'/data/users/user?email='
+    return this.httpClient.get(environment.baseUrl + '/data/users/user?email='
       + sessionStorage.getItem('username'));
   }
 
   updateProfile(user: User) {
     return this.httpClient.patch(
-      environment.baseUrl+'/data/users/update?id='
-        + sessionStorage.getItem('userId'),
+      environment.baseUrl + '/data/users/update?id='
+      + sessionStorage.getItem('userId'),
       user);
   }
 
   deleteAccount() {
-    return this.httpClient.patch(environment.baseUrl+'/data/users/delete?id='
+    return this.httpClient.patch(environment.baseUrl + '/data/users/delete?id='
       + sessionStorage.getItem('userId'), {}
-      );
+    );
   }
 
   registerUser(user: UserCreateDto) {
-    return this.httpClient.post(environment.baseUrl+'/registration', user);
+    return this.httpClient.post(environment.baseUrl + '/registration', user);
   }
 
   completeOrder(order: OrderCreateDto) {
-    return this.httpClient.post(environment.baseUrl+'/data/orders', order);
+    return this.httpClient.post(environment.baseUrl + '/data/orders', order);
   }
 
   addProduct(product: Product) {
-    return this.httpClient.post(environment.baseUrl+'/data/products', product);
+    return this.httpClient.post(environment.baseUrl + '/data/products', product);
   }
 
   editProduct(product: Product) {
-    return this.httpClient.patch(environment.baseUrl+'/data/products/update?id=' + product.id, product);
+    return this.httpClient.patch(environment.baseUrl + '/data/products/update?id=' + product.id, product);
   }
 
   getUsers() {
-    return this.httpClient.get<User[]>(environment.baseUrl+'/data/users/all');
+    return this.httpClient.get<User[]>(environment.baseUrl + '/data/users/all');
   }
 
   deleteUser(id: string) {
-    return this.httpClient.patch(environment.baseUrl+'/data/users/delete?id='
+    return this.httpClient.patch(environment.baseUrl + '/data/users/delete?id='
       + id, {}
     );
   }
 
   getPendingOrders() {
-    return this.httpClient.get<Order[]>(environment.baseUrl+'/data/orders/pending');
+    return this.httpClient.get<Order[]>(environment.baseUrl + '/data/orders/pending');
+  }
+
+  approveOrder(id: number, discount?: number) {
+    let reqUrl = environment.baseUrl + '/data/orders/approve/' + id;
+    if (discount != null) {
+      reqUrl = reqUrl + '?discount=' + discount;
+    }
+    return this.httpClient.patch(reqUrl, {});
   }
 
 }

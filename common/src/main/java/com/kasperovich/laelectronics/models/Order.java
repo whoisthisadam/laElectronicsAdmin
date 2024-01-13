@@ -28,7 +28,7 @@ public class Order {
     User user;
 
     @Column(name = "total")
-    @Positive
+//    @Positive
     Long total;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

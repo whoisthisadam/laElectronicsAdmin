@@ -20,7 +20,7 @@
 
   <ng-container matColumnDef="approve">
     <th mat-header-cell *matHeaderCellDef> Action </th>
-    <td mat-cell *matCellDef="let order" (click)="openDialog()">
+    <td mat-cell *matCellDef="let order" (click)="openDialog(order)">
       <button class="btn">Approve</button>
     </td>
   </ng-container>
