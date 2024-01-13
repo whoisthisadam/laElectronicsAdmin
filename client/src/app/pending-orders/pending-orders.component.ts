@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import {HttpClientService, Order, Product} from '../service/httpclient.service';
-import {ProductService} from '../service/product.service';
+import {Component, OnInit} from '@angular/core';
+import {HttpClientService, Order} from '../service/httpclient.service';
 import {Router} from '@angular/router';
 import {OrderService} from '../service/order.service';
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ApproveOrderComponent} from "../approve-order/approve-order.component";
 
 @Component({
   selector: 'app-pending-orders',
@@ -12,11 +13,12 @@ import {OrderService} from '../service/order.service';
 export class PendingOrdersComponent implements OnInit {
 
   orders: Order[];
-  displayedColumns: string[] = ['email', 'total', 'products'];
+  displayedColumns: string[] = ['email', 'total', 'products', 'approve'];
   isProduct: boolean=false;
 
   constructor(private httpClientService: HttpClientService,
               private orderService: OrderService,
+              private dialog: MatDialog,
               private router: Router) {
 
   }
@@ -37,5 +39,19 @@ export class PendingOrdersComponent implements OnInit {
     this.isProduct = true;
     this.orderService.setProducts(order.products);
   }
+
+  approveOrder(order: Order) {
+    // this.isProduct = true;
+    // this.orderService.setProducts(order.products);
+  }
+
+  openDialog=()=>{
+    const dialogConfig=new MatDialogConfig();
+    dialogConfig.width='1800px';
+    dialogConfig.height='756px';
+    dialogConfig.backdropClass='popupBackdropClass';
+    this.dialog.open(ApproveOrderComponent, dialogConfig)
+  }
+
 
 }
