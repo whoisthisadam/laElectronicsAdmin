@@ -4,6 +4,7 @@ import {UserCreateDto} from '../registration/registration.component';
 import {OrderCreateDto} from '../shopping-cart/shopping-cart.component';
 import {environment} from '../../environments/environment';
 import * as url from 'url';
+import {ApplyForm} from '../dated-reports/dated-reports.component';
 
 export class Order {
   constructor(
@@ -12,6 +13,14 @@ export class Order {
     public userId: number,
     public total: number,
     public products: Product[]
+  ) {
+  }
+}
+
+export class Manufacturer {
+  constructor(
+    public name: string,
+    public productsNumber: number
   ) {
   }
 }
@@ -129,6 +138,22 @@ export class HttpClientService {
       reqUrl = reqUrl + '?discount=' + discount;
     }
     return this.httpClient.patch(reqUrl, {});
+  }
+
+  getManufacturersByProducts() {
+    return this.httpClient.get<Manufacturer[]>(environment.baseUrl + '/data/manufacturers', {});
+  }
+
+  getDatedOrders(applyForm: ApplyForm) {
+    const fromDate = applyForm.fromYear + '-' + applyForm.fromMonth + '-' + applyForm.fromDay + ' 00:00:00';
+    const toDate = applyForm.toYear + '-' + applyForm.toMonth + '-' + applyForm.toDay + ' 23:59:59';
+    return this.httpClient.get<Order[]>(environment.baseUrl + '/data/orders/dated?from=' + fromDate + '&to=' + toDate);
+  }
+
+  getDatedProducts(applyForm: ApplyForm) {
+    const fromDate = applyForm.fromYear + '-' + applyForm.fromMonth + '-' + applyForm.fromDay + ' 00:00:00';
+    const toDate = applyForm.toYear + '-' + applyForm.toMonth + '-' + applyForm.toDay + ' 23:59:59';
+    return this.httpClient.get<Product[]>(environment.baseUrl + '/data/products/dated?from=' + fromDate + '&to=' + toDate);
   }
 
 }

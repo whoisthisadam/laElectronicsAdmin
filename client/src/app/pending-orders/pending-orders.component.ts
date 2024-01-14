@@ -18,8 +18,7 @@ export class PendingOrdersComponent implements OnInit {
 
   constructor(private httpClientService: HttpClientService,
               private orderService: OrderService,
-              private dialog: MatDialog,
-              private router: Router) {
+              private dialog: MatDialog) {
 
   }
 
@@ -49,7 +48,7 @@ export class PendingOrdersComponent implements OnInit {
     dialogConfig.height = '756px';
     dialogConfig.backdropClass = 'popupBackdropClass';
     this.dialog.open(ApproveOrderComponent, dialogConfig);
-  };
+  }
 
 
 }

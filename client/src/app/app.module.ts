@@ -24,7 +24,10 @@ import {AllUsersComponent} from './all-users/all-users.component';
 import {MoreUserInfoComponent} from './more-user-info/more-user-info.component';
 import {PendingOrdersComponent} from './pending-orders/pending-orders.component';
 import {OrderProductsComponent} from './order-products/order-products.component';
-import { ApproveOrderComponent } from './approve-order/approve-order.component';
+import {ApproveOrderComponent} from './approve-order/approve-order.component';
+import {ReportsComponent} from './reports/reports.component';
+import {DatedReportsComponent} from './dated-reports/dated-reports.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -46,10 +49,13 @@ import { ApproveOrderComponent } from './approve-order/approve-order.component';
     MoreUserInfoComponent,
     PendingOrdersComponent,
     OrderProductsComponent,
-    ApproveOrderComponent
+    ApproveOrderComponent,
+    ReportsComponent,
+    DatedReportsComponent
   ],
-  entryComponents:[
-    ApproveOrderComponent
+  entryComponents: [
+    ApproveOrderComponent,
+    DatedReportsComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +66,8 @@ import { ApproveOrderComponent } from './approve-order/approve-order.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [ { provide: HTTP_INTERCEPTORS, useClass: BasicAuthHtppInterceptorService, multi: true }],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: BasicAuthHtppInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

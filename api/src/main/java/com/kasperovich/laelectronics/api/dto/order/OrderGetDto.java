@@ -3,6 +3,7 @@ package com.kasperovich.laelectronics.api.dto.order;
 import com.kasperovich.laelectronics.api.dto.payment.PaymentGetDto;
 import com.kasperovich.laelectronics.api.dto.product.ProductGetDto;
 import com.kasperovich.laelectronics.enums.OrderStatus;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 

@@ -23,16 +23,13 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     @Override
     public List<Product> findAll() {
-        List<Product> products = productRepository.findAll()
-//                .stream().filter(x->!x.getIsDeleted()).collect(Collectors.toList())
-        ;
+        List<Product> products = productRepository.findAll();
         return products;
     }
 
     @Override
     public Product createProduct(@Valid Product product) {
         product.setEditData(new Edit(new Timestamp(new Date().getTime()), null));
-        product.setStatus(ProductStatus.values()[new Random().nextInt(3)]);//TODO remove random when release
         return productRepository.save(product);
     }
 

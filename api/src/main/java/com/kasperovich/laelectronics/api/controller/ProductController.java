@@ -1,6 +1,7 @@
 package com.kasperovich.laelectronics.api.controller;
 
 import com.kasperovich.laelectronics.api.dto.category.CategoryDto;
+import com.kasperovich.laelectronics.api.dto.order.OrderGetDto;
 import com.kasperovich.laelectronics.api.dto.product.DeleteProductDto;
 import com.kasperovich.laelectronics.api.dto.product.ProductCreateDto;
 import com.kasperovich.laelectronics.api.dto.product.ProductGetDto;
@@ -35,7 +36,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @Validated
@@ -154,6 +157,42 @@ public class ProductController {
         ProductGetDto productGetDto=productMapper.toDto(updatedProduct);
         productGetDto.getCategory().setName(updatedProduct.getCategory().getCategoryName());
         return ResponseEntity.ok(Collections.singletonMap("Updated product:",productMapper.toDto(product)));
+    }
+
+    @Operation(
+            summary = "Find all products by date(Admin&Moderator only)",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Found",
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = ProductGetDto.class)))
+                            })
+            }
+            , parameters = {
+            @Parameter(
+                    in = ParameterIn.HEADER,
+                    name = "X-Auth-Token",
+                    required = true,
+                    description = "JWT Token, can be generated in auth controller /auth")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @GetMapping("/dated")
+    public ResponseEntity<List<ProductGetDto>> findAllDated(@RequestParam Timestamp from, @RequestParam Timestamp to) {
+        List<Product>entites=productService
+                .findAll()
+                .stream()
+                .filter(product -> product.getEditData().getCreationDate().after(from)&&product.getEditData().getCreationDate().before(to))
+                .toList();
+        List<ProductGetDto>dtos=new ArrayList<>(productListMapper.toDto(entites));
+        dtos.forEach(x->{
+            Optional<Category> category=Optional.ofNullable(entites.get(dtos.indexOf(x)).getCategory());
+            category.ifPresent(val->x.getCategory().setName(val.getCategoryName()));
+            x.setManufacturerName(entites.get(dtos.indexOf(x)).getManufacturer().getName());
+        });
+        return ResponseEntity.ok(dtos);
     }
 
 

@@ -3,7 +3,6 @@ import {OrderService} from '../service/order.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClientService} from '../service/httpclient.service';
 import {Router} from '@angular/router';
-import {formatNumber} from '@angular/common';
 
 @Component({
   selector: 'app-approve-order',

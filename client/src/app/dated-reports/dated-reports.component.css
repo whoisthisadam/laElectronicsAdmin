@@ -1,0 +1,12 @@
+table{
+  width: 100%;
+}
+
+.wrapper{
+  display: flex;
+  justify-content: center;
+}
+
+app-order-products{
+  width: 100%;
+}

@@ -1,0 +1,28 @@
+<!--<link href="reports.component.css" rel="stylesheet">-->
+<div class="wrapper">
+  <br>
+  <div class="options">
+    <button class="btn-options" (click)="openDialog('orders')">Orders(set period)</button>
+    <br>
+    <button class="btn-options" (click)="openDialog('products')">Products(set period)</button>
+    <br>
+    <button class="btn-options" (click)="showManufacturers()">Manufacturers(products number)</button>
+  </div>
+  <table mat-table [dataSource]='manufacturers' *ngIf="this.isManufacturers">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name</th>
+      <td mat-cell *matCellDef="let manufacturer"> {{manufacturer.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="products">
+      <th mat-header-cell *matHeaderCellDef> Products Number</th>
+      <td mat-cell *matCellDef="let manufacturer"> {{manufacturer.productsNumber}} </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+

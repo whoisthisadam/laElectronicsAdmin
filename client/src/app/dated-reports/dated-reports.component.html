@@ -1,0 +1,101 @@
+<div class="wrapper">
+  <form [formGroup]="form" (ngSubmit)="fetchData()" *ngIf="!isDatedProducts&&!isDatedOrders">
+    <div>
+      <mat-card class="container">
+
+        <div class="container" style="width: 80%;">
+
+          <mat-form-field>
+            <input matInput placeholder="From Day" formControlName="fromDay">
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput placeholder="To Day" formControlName="toDay">
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput placeholder="From Month" formControlName="fromMonth">
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput placeholder="To Month" formControlName="toMonth">
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput placeholder="From Year" formControlName="fromYear">
+          </mat-form-field>
+
+          <br>
+
+          <mat-form-field>
+            <input matInput placeholder="To Year" formControlName="toYear">
+          </mat-form-field>
+
+        </div>
+        <button mat-flat-button color="primary" [disabled]="!form.valid" type="submit">Submit</button>
+      </mat-card>
+    </div>
+  </form>
+
+  <table mat-table [dataSource]='orders' *ngIf="!this.isOrderProducts&&this.isDatedOrders&&type==='orders'">
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> User Email</th>
+      <td mat-cell *matCellDef="let order"> {{order.userEmail}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef> Total</th>
+      <td mat-cell *matCellDef="let order"> {{order.total}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="products">
+      <th mat-header-cell *matHeaderCellDef> Action</th>
+      <td mat-cell *matCellDef="let order" (click)="toProducts(order)">
+
+        <button class="btn">View Products</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsOrders"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsOrders;"></tr>
+  </table>
+
+
+  <app-order-products *ngIf="this.isOrderProducts"></app-order-products>
+
+  <table mat-table [dataSource]='products' *ngIf="type==='products'&&!isDatedOrders&&!isOrderProducts&&isDatedProducts">
+
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef> Category</th>
+      <td mat-cell *matCellDef="let product"> {{product.category.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="brand">
+      <th mat-header-cell *matHeaderCellDef> Brand</th>
+      <td mat-cell *matCellDef="let product"> {{product.manufacturerName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name</th>
+      <td mat-cell *matCellDef="let product"> {{product.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Price</th>
+      <td mat-cell *matCellDef="let product"> {{product.price}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnsProducts"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumnsProducts;"></tr>
+  </table>
+
+</div>

@@ -20,14 +20,24 @@ export class OrderService {
   private product = new BehaviorSubject<boolean>(false);
   isProduct = this.product.asObservable();
 
+  private datedProduct = new BehaviorSubject<boolean>(false);
+  isDatedProduct = this.datedProduct.asObservable();
+
   private total = new BehaviorSubject<number>(0);
   calculatedTotal = this.total.asObservable();
 
   private id = new BehaviorSubject<number>(0);
   selectedId = this.id.asObservable();
 
+  private type = new BehaviorSubject<string>(null);
+  selectedType = this.type.asObservable();
+
   setIsProduct(isProduct: boolean) {
     this.product.next(isProduct);
+  }
+
+  setIsDatedProduct(isProduct: boolean) {
+    this.datedProduct.next(isProduct);
   }
 
   setOrder(order: OrderCreateDto) {
@@ -48,6 +58,10 @@ export class OrderService {
 
   setId(id: number) {
     this.id.next(id);
+  }
+
+  setType(type: string) {
+    this.type.next(type);
   }
 
   constructor() {

@@ -33,6 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -103,6 +105,37 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<List<OrderGetDto>> findAll() {
         List<OrderGetDto> list = orderService.findAll().stream().map(orderGetConverter::convert).collect(Collectors.toList());
+        return ResponseEntity.ok(list);
+    }
+
+    @Operation(
+            summary = "Find all orders by date(Admin&Moderator only)",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Found",
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array = @ArraySchema(schema = @Schema(implementation = OrderGetDto.class)))
+                            })
+            }
+            , parameters = {
+            @Parameter(
+                    in = ParameterIn.HEADER,
+                    name = "X-Auth-Token",
+                    required = true,
+                    description = "JWT Token, can be generated in auth controller /auth")
+    })
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    @GetMapping("/dated")
+    public ResponseEntity<List<OrderGetDto>> findAllDated(@RequestParam Timestamp from, @RequestParam Timestamp to) {
+        List<OrderGetDto> list = orderRepository
+                .findAll()
+                .stream()
+                .filter(order ->
+                        order.getEditData().getCreationDate().after(from)&&order.getEditData().getCreationDate().before(to))
+                .map(orderGetConverter::convert).toList();
         return ResponseEntity.ok(list);
     }
 
