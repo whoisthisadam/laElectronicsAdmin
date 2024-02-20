@@ -25,15 +25,11 @@ public class Role {
     @Column(name = "id", nullable = false)
     Long id;
 
-    public Role(Roles name) {
-        this.name = name;
-    }
-
     @Column
     @Enumerated(EnumType.STRING)
     Roles name;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "role")
     @JsonIgnore
     Set<User>users;
 

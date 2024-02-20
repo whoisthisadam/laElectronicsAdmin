@@ -29,7 +29,7 @@ public class PaymentUpdateConverter {
 
         payment.setEditData(new Edit(payment.getEditData().getCreationDate(), new Timestamp(new Date().getTime())));
 
-        payment.setAmount(payment.getOrder().getTotal());
+        payment.setAmount(payment.getOrder().getSubscription().getPrice());
 
         return payment;
     }

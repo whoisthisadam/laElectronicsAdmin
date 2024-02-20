@@ -5,15 +5,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Positive;
 import java.util.Set;
 
 @Data
 @Entity
-@EqualsAndHashCode(exclude = {
-        "users", "products"
-})
+@EqualsAndHashCode(exclude = "users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "discount")
 @Builder
@@ -36,20 +34,17 @@ public class Discount {
 
     @Embedded
     @AttributeOverrides({
-            @AttributeOverride(name="creationDate", column = @Column(name = "creation_date")),
+            @AttributeOverride(name = "creationDate", column = @Column(name = "creation_date")),
             @AttributeOverride(name = "modificationDate", column = @Column(name = "modification_date"))
     })
     Edit editData;
 
     @Column(name = "is_deleted")
-    Boolean isDeleted=false;
+    Boolean isDeleted = false;
 
-    @OneToMany(mappedBy = "userDiscount", fetch = FetchType.EAGER)
-    Set<User>users;
+    @OneToMany(mappedBy = "userDiscount")
+    Set<User> users;
 
-    @OneToMany(mappedBy = "productDiscount", fetch = FetchType.EAGER)
-    Set<Product>products;
-
-    @OneToOne(mappedBy = "orderDiscount", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    Order order;
+    @OneToMany(mappedBy = "subDiscount")
+    Set<Subscription> subscriptions;
 }

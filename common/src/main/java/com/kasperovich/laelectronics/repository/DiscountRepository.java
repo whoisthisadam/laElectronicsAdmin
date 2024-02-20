@@ -1,7 +1,7 @@
 package com.kasperovich.laelectronics.repository;
 
-import com.kasperovich.laelectronics.models.Discount;
 import com.kasperovich.laelectronics.enums.Discounts;
+import com.kasperovich.laelectronics.models.Discount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

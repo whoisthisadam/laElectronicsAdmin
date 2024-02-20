@@ -13,10 +13,10 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ManufacturerGetDto {
+public class OrganizationGetDto {
 
     String name;
 
-    Long productsNumber;
+    Long subNumber;
 
 }

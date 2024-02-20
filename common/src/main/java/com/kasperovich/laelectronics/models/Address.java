@@ -3,7 +3,6 @@ package com.kasperovich.laelectronics.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.util.Set;
@@ -41,7 +40,7 @@ public class Address {
     @Column(name = "country")
     String country;
 
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
     @JsonIgnore
     Set<User>users;
 }

@@ -8,13 +8,13 @@ import java.util.Set;
 
 @Data
 @Entity
-@EqualsAndHashCode(exclude = "products")
+@EqualsAndHashCode(exclude = "subscriptions")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "manufacturers")
+@Table(name = "organizations")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Manufacturer {
+public class Organization{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Manufacturer {
     @Column(name = "name")
     String name;
 
-    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER)
-    Set<Product> products;
+    @OneToMany(mappedBy = "organization")
+    Set<Subscription> subscriptions;
 
 }

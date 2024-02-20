@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ public class PaymentCreateConverter {
     public Payment convert(PaymentCreateDto paymentCreateDto, Order order) {
         Payment payment = new Payment();
         payment.setOrder(order);
-        payment.setAmount(order.getTotal());
+        payment.setAmount(order.getSubscription().getPrice());
         payment.setProvider(paymentCreateDto.getProvider());
         payment.setStatus(PaymentStatus.IN_PROGRESS);
         payment.setEditData(new Edit(new Timestamp(new Date().getTime()), null));

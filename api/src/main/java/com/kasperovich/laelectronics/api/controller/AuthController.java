@@ -44,7 +44,7 @@ public class AuthController {
         );
         SecurityContextHolder.getContext().setAuthentication(authenticate);
 
-        User user = userRepository.findUserByEmailAndIsDeleted(request.getEmail(), false)
+        User user = userRepository.findByCredentialsLoginAndIsDeleted(request.getEmail(), false)
                 .orElseThrow(EntityNotFoundException::new);
 
         /*Generate token with answer to user*/

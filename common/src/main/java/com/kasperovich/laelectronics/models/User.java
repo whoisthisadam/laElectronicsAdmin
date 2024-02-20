@@ -80,11 +80,8 @@ public class User {
     @JoinColumn(name = "role_id")
     Role role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     Set<Order> orders;
 
-    public void setPassword(String password){
-        this.getCredentials().setPassword(password);
-    }
 }
 

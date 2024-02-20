@@ -21,14 +21,14 @@ public class UserSecurityService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
             /*Find user in DB*/
-            Optional<User> searchResult = userRepository.findUserByEmailAndIsDeleted(username, false);
+            Optional<User> searchResult = userRepository.findByCredentialsLoginAndIsDeleted(username, false);
 
             if (searchResult.isPresent()) {
                 User user = searchResult.get();
 
                 /*We are creating Spring Security User object*/
                 return new org.springframework.security.core.userdetails.User(
-                        user.getEmail(),
+                        user.getCredentials().getLogin(),
                         user.getCredentials().getPassword(),
 //                        ["ROLE_USER", "ROLE_ADMIN"]
                         AuthorityUtils.commaSeparatedStringToAuthorityList(

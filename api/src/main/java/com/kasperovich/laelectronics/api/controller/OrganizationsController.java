@@ -1,9 +1,8 @@
 package com.kasperovich.laelectronics.api.controller;
 
-import com.kasperovich.laelectronics.api.dto.manufacturer.ManufacturerGetDto;
-import com.kasperovich.laelectronics.models.Manufacturer;
-import com.kasperovich.laelectronics.repository.ManufacturerRepository;
-import com.kasperovich.laelectronics.repository.OrderRepository;
+import com.kasperovich.laelectronics.api.dto.manufacturer.OrganizationGetDto;
+import com.kasperovich.laelectronics.models.Organization;
+import com.kasperovich.laelectronics.repository.OrganizationRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -31,16 +30,14 @@ import java.util.stream.Collectors;
 @RestController
 @Validated
 @Slf4j
-@RequestMapping("/data/manufacturers")
+@RequestMapping("/data/organizations")
 @RequiredArgsConstructor
-@Tag(name = "Manufacturers")
+@Tag(name = "Organizations")
 @CrossOrigin
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ManufacturersController {
+public class OrganizationsController {
 
-    ManufacturerRepository manufacturerRepository;
-
-    OrderRepository orderRepository;
+    OrganizationRepository organizationRepository;
 
     @Operation(
             summary = "Find selling manufacturers data",
@@ -59,16 +56,16 @@ public class ManufacturersController {
                     required = true,
                     description = "JWT Token, can be generated in auth controller /auth")
     })
-    @PreAuthorize("hasRole('MODERATOR')")
+    @PreAuthorize("hasAnyRole('MODERATOR', 'ADMIN')")
     @GetMapping
-    public ResponseEntity<List<ManufacturerGetDto>> findAll() {
-        List<Manufacturer> manufacturersEntities = manufacturerRepository.findAll();
+    public ResponseEntity<List<OrganizationGetDto>> findAll() {
+        List<Organization> manufacturersEntities = organizationRepository.findAll();
 
-        List<ManufacturerGetDto> manufacturers = manufacturersEntities.stream().map(
+        List<OrganizationGetDto> manufacturers = manufacturersEntities.stream().map(
                 manufacturer ->
-                        ManufacturerGetDto.builder().name(manufacturer.getName()).productsNumber((long) manufacturer.getProducts().size()).build()
+                        OrganizationGetDto.builder().name(manufacturer.getName()).subNumber((long) manufacturer.getSubscriptions().size()).build()
 
-        ).sorted(Comparator.comparing(ManufacturerGetDto::getProductsNumber).reversed()).collect(Collectors.toList());
+        ).sorted(Comparator.comparing(OrganizationGetDto::getSubNumber).reversed()).collect(Collectors.toList());
 
         return ResponseEntity.ok(manufacturers);
     }
