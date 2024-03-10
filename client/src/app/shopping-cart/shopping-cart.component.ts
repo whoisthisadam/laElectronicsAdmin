@@ -57,21 +57,21 @@ export class ShoppingCartComponent implements OnInit {
     this.totalPrice = sum;
   }
 
-  submitOrder() {
-    const numbers = [];
-    this.products.forEach(x => {
-      numbers.push(x.id);
-    });
-
-    this.order = new OrderCreateDto(
-      parseInt(sessionStorage.getItem('userId'), 10),
-      new PaymentCreateDto('BANK_CARD'),
-      numbers
-    );
-    this.orderService.setOrder(this.order);
-    this.orderService.setCost(this.totalPrice);
-
-    this.router.navigate(['/payment']);
-  }
+  // submitOrder() {
+  //   const numbers = [];
+  //   this.products.forEach(x => {
+  //     numbers.push(x.id);
+  //   });
+  //
+  //   this.order = new OrderCreateDto(
+  //     parseInt(sessionStorage.getItem('userId'), 10),
+  //     new PaymentCreateDto('BANK_CARD'),
+  //     numbers
+  //   );
+  //   this.orderService.setOrder(this.order);
+  //   this.orderService.setCost(this.totalPrice);
+  //
+  //   this.router.navigate(['/payment']);
+  // }
 
 }

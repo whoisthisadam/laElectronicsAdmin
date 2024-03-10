@@ -12,4 +12,6 @@ public class PaymentCreateDto {
 
     PaymentProviders provider;
 
+    Long amount;
+
 }

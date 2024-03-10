@@ -1,9 +1,7 @@
 package com.kasperovich.laelectronics.models;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
@@ -11,6 +9,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "l_users_subscriptions")
 @EqualsAndHashCode(exclude = {"payment", "user", "subscription"})
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +28,6 @@ public class Order {
 
     @OneToOne(mappedBy = "order")
     Payment payment;
+
 }
+

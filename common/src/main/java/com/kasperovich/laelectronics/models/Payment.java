@@ -3,15 +3,16 @@ package com.kasperovich.laelectronics.models;
 import com.kasperovich.laelectronics.enums.PaymentProviders;
 import com.kasperovich.laelectronics.enums.PaymentStatus;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "payments")
 @EqualsAndHashCode(exclude = "order")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
 
     @Id

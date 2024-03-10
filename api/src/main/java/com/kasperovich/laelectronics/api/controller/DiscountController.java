@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/data/discounts")
 @RequiredArgsConstructor
 @Tag(name = "Discounts")
+@CrossOrigin
 public class DiscountController {
 
     private final DiscountService discountService;
@@ -61,7 +62,7 @@ public class DiscountController {
                     required = true,
                     description = "JWT Token, can be generated in auth controller /auth")
     })
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
     @Transactional
     @PostMapping
     public ResponseEntity<Map<String, DiscountGetDto>> createDiscount(@RequestBody DiscountCreateDto discountCreateDto) {

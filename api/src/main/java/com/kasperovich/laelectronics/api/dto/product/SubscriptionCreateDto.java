@@ -21,8 +21,6 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 public class SubscriptionCreateDto {
 
-    CategoryDto category;
-
     String name;
 
     Long price;

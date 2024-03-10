@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {HttpClientService, Product} from '../service/httpclient.service';
-import {ShoppingCartComponent} from '../shopping-cart/shopping-cart.component';
 import {ProductService} from '../service/product.service';
 import {Router} from '@angular/router';
+import {OrderService} from '../service/order.service';
+import {AuthenticationService} from '../service/authentication.service';
 
 @Component({
   selector: 'app-products',
@@ -12,15 +13,18 @@ import {Router} from '@angular/router';
 export class ProductsComponent implements OnInit {
   public selectedProducts: Product[] = [];
   products: Product[];
-  displayedColumns: string[] = ['category', 'brand', 'name', 'price', 'cart', 'edit', 'delete'];
+  displayedColumns: string[] = this.loginService.isUserModerator()
+    ? ['provider', 'name', 'price', 'edit', 'delete', 'discount'] : ['provider', 'name', 'price', 'cart'];
 
   @Input() error: string | null;
 
   constructor(private httpClientService: HttpClientService,
               private productsService: ProductService,
+              private orderService: OrderService,
+              private loginService: AuthenticationService,
               private router: Router) {
 
-}
+  }
 
   ngOnInit() {
     this.httpClientService
@@ -37,21 +41,26 @@ export class ProductsComponent implements OnInit {
 
   deleteProduct(product: Product): void {
     this.httpClientService.deleteProduct(product.id).subscribe(data => {
-      this.products = this.products.filter(u => u !== product);
-    },
+        this.products = this.products.filter(u => u !== product);
+      },
       () => {
-      this.error = 'Unauthorized!';
-    });
+        this.error = 'Unauthorized!';
+      });
   }
 
-  addToCart(product: Product) {
-    this.productsService.selectedProduct.subscribe(value => this.selectedProducts = value);
-    this.selectedProducts.push(product);
-    this.productsService.setProduct(this.selectedProducts);
+  subscribe(product: Product) {
+    this.orderService.setSub(product);
+    this.router.navigate(['/payment']);
   }
 
   editProduct(product: Product) {
     this.productsService.setProdId(product.id);
     this.router.navigate(['/edit-product']);
+  }
+
+  discount(sub: Product) {
+    this.productsService.setProdId(sub.id);
+    this.orderService.setTotal(sub.price);
+    this.router.navigate(['discount']);
   }
 }

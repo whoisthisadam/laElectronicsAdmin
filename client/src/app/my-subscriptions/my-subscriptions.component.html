@@ -1,0 +1,29 @@
+<table mat-table [dataSource]='products'>
+
+  <ng-container matColumnDef="brand">
+    <th mat-header-cell *matHeaderCellDef> Provider </th>
+    <td mat-cell *matCellDef="let product"> {{product.manufacturerName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let product"> {{product.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef> Price </th>
+    <td mat-cell *matCellDef="let product"> {{product.price}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef> Action </th>
+    <td mat-cell *matCellDef="let product" (click)="removeSub(product)">
+      <button class="btn btn-danger">Remove</button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<h3>Total price: {{this.totalPrice}}</h3>

@@ -1,21 +1,17 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span><a mat-button href="https://www.itcsystems.com" style="font-size: larger;">LaElectronics</a></span>
+    <span><a mat-button href="https://www.itcsystems.com" style="font-size: larger;">OneSub</a></span>
     <span class="example-fill-remaining-space"></span>
     <span class="align-center"></span>
     <span class="example-spacer"></span>
     <a mat-button *ngIf="!loginService.isUserLoggedIn()" routerLink="/login" class="nav-link">Login</a>
-    <a mat-button *ngIf="loginService.isUserLoggedIn()&&loginService.isUserModerator()" routerLink="/pending-orders"
-       class="nav-link">Pending orders</a>
-    <a mat-button *ngIf="loginService.isUserLoggedIn()&&loginService.isUserModerator()" routerLink="/reports"
-       class="nav-link">Reports</a>
-    <a mat-button *ngIf="loginService.isUserLoggedIn()&&!loginService.isUserModerator()" routerLink="/products"
-       class="nav-link">Products</a>
+    <a mat-button *ngIf="loginService.isUserLoggedIn()" routerLink="/products"
+       class="nav-link">Available subscriptions</a>
     <a mat-button *ngIf="loginService.isUserLoggedIn()&&!loginService.isUserModerator()" routerLink="/profile"
        class="nav-link">Profile</a>
-            <a mat-button *ngIf="loginService.isUserLoggedIn()&&!loginService.isUserModerator()" routerLink="/shopping-cart" class="nav-link">Shopping cart</a>
+            <a mat-button *ngIf="loginService.isUserLoggedIn()&&!loginService.isUserModerator()" routerLink="/my-subscriptions" class="nav-link">My subscriptions</a>
     <a mat-button *ngIf="loginService.isUserLoggedIn()" routerLink="/logout" class="nav-link">LogOut</a>
-<!--    <a mat-button *ngIf="loginService.isUserLoggedIn()" routerLink="/add-product" class="nav-link">Add product</a>-->
+    <a mat-button *ngIf="loginService.isUserLoggedIn()&&loginService.isUserModerator()" routerLink="/add-product" class="nav-link">Add subscription</a>
     <a mat-button *ngIf="loginService.isUserLoggedIn()&&!loginService.isUserModerator()" routerLink="/all-users"
        class="nav-link">View Users</a>
   </mat-toolbar-row>

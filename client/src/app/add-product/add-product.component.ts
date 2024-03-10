@@ -22,8 +22,7 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group  ({
-      category: [null, [Validators.required]],
-      brand: [null, [Validators.required]],
+      manufacturerName: [null, [Validators.required]],
       name: [null, [Validators.required]],
       price: [null, [Validators.required]]
     });
@@ -31,8 +30,7 @@ export class AddProductComponent implements OnInit {
 
   addProduct() {
     this.product = this.form.getRawValue();
-    this.product.category = new Category(this.form.get('category').value);
-    this.httpClientService.editProduct(this.product).subscribe(
+    this.httpClientService.addProduct(this.product).subscribe(
       () => this.router.navigate(['/products']),
       error => {
         if (error.status === 403) {

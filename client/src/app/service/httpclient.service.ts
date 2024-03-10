@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {UserCreateDto} from '../registration/registration.component';
-import {OrderCreateDto} from '../shopping-cart/shopping-cart.component';
 import {environment} from '../../environments/environment';
 import * as url from 'url';
 import {ApplyForm} from '../dated-reports/dated-reports.component';
+import {PaymentCreateDto} from '../payment/payment.component';
 
 export class Order {
   constructor(
@@ -28,7 +28,6 @@ export class Manufacturer {
 export class Product {
   constructor(
     public id: number,
-    public category: Category,
     public name: string,
     public price: number,
     public manufacturerName: string
@@ -65,6 +64,15 @@ export class Category {
   }
 }
 
+export class Discount {
+  constructor(
+    public name: string,
+    public discountPercent: string,
+    public subId: number
+  ) {
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -85,7 +93,7 @@ export class HttpClientService {
 
 
   getProfile() {
-    return this.httpClient.get(environment.baseUrl + '/data/users/user?email='
+    return this.httpClient.get(environment.baseUrl + '/data/users/user?login='
       + sessionStorage.getItem('username'));
   }
 
@@ -106,9 +114,9 @@ export class HttpClientService {
     return this.httpClient.post(environment.baseUrl + '/registration', user);
   }
 
-  completeOrder(order: OrderCreateDto) {
-    return this.httpClient.post(environment.baseUrl + '/data/orders', order);
-  }
+  // completeOrder(order: OrderCreateDto) {
+  //   return this.httpClient.post(environment.baseUrl + '/data/orders', order);
+  // }
 
   addProduct(product: Product) {
     return this.httpClient.post(environment.baseUrl + '/data/products', product);
@@ -154,6 +162,22 @@ export class HttpClientService {
     const fromDate = applyForm.fromYear + '-' + applyForm.fromMonth + '-' + applyForm.fromDay + ' 00:00:00';
     const toDate = applyForm.toYear + '-' + applyForm.toMonth + '-' + applyForm.toDay + ' 23:59:59';
     return this.httpClient.get<Product[]>(environment.baseUrl + '/data/products/dated?from=' + fromDate + '&to=' + toDate);
+  }
+
+  addSubscription(subId: number, userLogin: string, dto: PaymentCreateDto) {
+    return this.httpClient.post(`${environment.baseUrl}/data/products/user?subID=${subId}&userLogin=${userLogin}`, dto);
+  }
+
+  getSubs(userName: string) {
+    return this.httpClient.get<Product[]>(`${environment.baseUrl}/data/products/subscriptions?userName=${userName}`);
+  }
+
+  removeUserSub(subId: number) {
+    return this.httpClient.delete(`${environment.baseUrl}/data/products/subscriptions/remove?subId=${subId}`);
+  }
+
+  addSubDiscount(discount: Discount) {
+    return this.httpClient.post(`${environment.baseUrl}/data/discounts`, discount);
   }
 
 }

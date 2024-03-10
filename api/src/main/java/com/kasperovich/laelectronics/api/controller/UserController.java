@@ -163,10 +163,10 @@ public class UserController {
                     required = true,
                     description = "JWT Token, can be generated in auth controller /auth")
     })
-    @PreAuthorize(value = "hasRole('ADMIN') or authentication.principal.username.equals(#email)")
+    @PreAuthorize(value = "hasRole('ADMIN') or authentication.principal.username.equals(#login)")
     @GetMapping("/user")
-    public ResponseEntity<UserGetDto>getProfile(@RequestParam String email){
-        User user=userService.findUserByEmail(email);
+    public ResponseEntity<UserGetDto>getProfile(@RequestParam String login){
+        User user=userService.findUserByLogin(login);
         UserGetDto result=userMapper.toDto(user);
         result.setRoleName(String.valueOf(user.getRole().getName()));
         result.setLogin(user.getCredentials().getLogin());

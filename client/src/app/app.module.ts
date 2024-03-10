@@ -28,6 +28,8 @@ import {ApproveOrderComponent} from './approve-order/approve-order.component';
 import {ReportsComponent} from './reports/reports.component';
 import {DatedReportsComponent} from './dated-reports/dated-reports.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MySubscriptionsComponent } from './my-subscriptions/my-subscriptions.component';
+import { SubDiscountComponent } from './sub-discount/sub-discount.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     OrderProductsComponent,
     ApproveOrderComponent,
     ReportsComponent,
-    DatedReportsComponent
+    DatedReportsComponent,
+    MySubscriptionsComponent,
+    SubDiscountComponent
   ],
   entryComponents: [
     ApproveOrderComponent,

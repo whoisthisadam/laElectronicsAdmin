@@ -24,7 +24,6 @@ export class UpdateProfileComponent implements OnInit {
     this.form = this.formBuilder.group  ({
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
-      login: [null, [Validators.required]],
       mobilePhone: [null, [Validators.required]],
     });
   }

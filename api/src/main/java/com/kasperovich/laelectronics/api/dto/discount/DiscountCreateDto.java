@@ -18,4 +18,6 @@ public class DiscountCreateDto {
 
     List<Long>userIds;
 
+    Long subId;
+
 }

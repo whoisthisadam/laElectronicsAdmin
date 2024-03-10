@@ -17,6 +17,8 @@ import {MoreUserInfoComponent} from './more-user-info/more-user-info.component';
 import {PendingOrdersComponent} from './pending-orders/pending-orders.component';
 import {OrderProductsComponent} from './order-products/order-products.component';
 import {ReportsComponent} from './reports/reports.component';
+import {MySubscriptionsComponent} from './my-subscriptions/my-subscriptions.component';
+import {SubDiscountComponent} from './sub-discount/sub-discount.component';
 
 const routes: Routes = [
   { path: 'products', component: ProductsComponent, canActivate: [AuthGaurdService] },
@@ -34,7 +36,9 @@ const routes: Routes = [
   { path: 'all-users/user', component: MoreUserInfoComponent, canActivate: [AuthGaurdService] },
   { path: 'pending-orders', component: PendingOrdersComponent, canActivate: [AuthGaurdService] },
   { path: 'order-products', component: OrderProductsComponent, canActivate: [AuthGaurdService] },
-  { path: 'reports', component: ReportsComponent, canActivate: [AuthGaurdService] }
+  { path: 'reports', component: ReportsComponent, canActivate: [AuthGaurdService] },
+  { path: 'my-subscriptions', component: MySubscriptionsComponent, canActivate: [AuthGaurdService] },
+  { path: 'discount', component: SubDiscountComponent, canActivate: [AuthGaurdService] }
 ];
 
 @NgModule({

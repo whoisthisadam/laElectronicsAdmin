@@ -1,15 +1,12 @@
-<h2>Add new product(ONLY FOR ADMIN)</h2>
+<h2>Add new product</h2>
 <form [formGroup]="form" (ngSubmit)="addProduct()">
   <div>
     <mat-card class="container">
 
       <div class="container" style="width: 80%;">
-        <mat-form-field>
-          <input matInput placeholder="Category" formControlName="category">
-        </mat-form-field>
 
         <mat-form-field>
-          <input matInput placeholder="Brand" formControlName="brand">
+          <input matInput placeholder="Provider" formControlName="manufacturerName">
         </mat-form-field>
 
         <mat-form-field>

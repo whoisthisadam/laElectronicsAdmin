@@ -1,0 +1,20 @@
+<div class="wrapper">
+  <div class="total" style="font-size: 200%">
+    <strong>Price: {{this.total}}</strong>
+  </div>
+  <br>
+  <form [formGroup]="form" (ngSubmit)="applyDiscount()">
+    <div>
+      <mat-card class="container">
+        <div class="container" style="width: 80%;">
+          <mat-form-field>
+            <input matInput placeholder="Percent" formControlName="percent">
+          </mat-form-field>
+        </div>
+        <button mat-flat-button color="primary" [disabled]="!form.valid&&form.get('percent').value>100" type="submit">
+          Apply discount
+        </button>
+      </mat-card>
+    </div>
+  </form>
+</div>
