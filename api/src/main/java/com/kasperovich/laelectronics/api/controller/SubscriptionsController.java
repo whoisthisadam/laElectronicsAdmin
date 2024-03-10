@@ -30,6 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -129,6 +130,7 @@ public class SubscriptionsController {
         }));
         Subscription createdProduct = subscriptionService.createProduct(product);
         SubscriptionGetDto subscriptionGetDto = subscriptionMapper.toDto(createdProduct);
+        subscriptionGetDto.setManufacturerName(product.getOrganization().getName());
         return new ResponseEntity<>(
                 Collections.singletonMap("New product:", subscriptionGetDto),
                 HttpStatus.CREATED
@@ -220,7 +222,7 @@ public class SubscriptionsController {
     public ResponseEntity<DeleteProductDto> deleteProduct(@RequestParam(value = "ID") String idStr) throws NotDeletableStatusException {
         Long id = Long.parseLong(idStr);
         subscriptionService.deleteProduct(id);
-        return ResponseEntity.ok(new DeleteProductDto(DeleteProductDto.DeletedStatus.DELETED, id));
+        return new ResponseEntity<>(new DeleteProductDto(DeleteProductDto.DeletedStatus.DELETED, id), HttpStatus.NO_CONTENT);
     }
 
     @Operation(
@@ -306,9 +308,7 @@ public class SubscriptionsController {
                 .orElseThrow(() -> new EntityNotFoundException("User with this login does not exist"));
         List<Subscription> subscriptions = user.getOrders().stream().map(Order::getSubscription).toList();
         List<SubscriptionGetDto> dtos = subscriptionListMapper.toDto(subscriptions);
-        dtos.forEach(dto -> {
-            dto.setManufacturerName(subscriptions.get(dtos.indexOf(dto)).getOrganization().getName());
-        });
+        dtos.forEach(dto -> dto.setManufacturerName(subscriptions.get(dtos.indexOf(dto)).getOrganization().getName()));
         return ResponseEntity.ok(dtos);
     }
 
@@ -320,14 +320,16 @@ public class SubscriptionsController {
                             description = "Subscriptions deleted")
             })
     @DeleteMapping("/subscriptions/remove")
-    public ResponseEntity<?> removeUserSub(@RequestParam String subId, Authentication authentication) {
-        UserDetails userDetails=(UserDetails)authentication.getPrincipal();
+    public ResponseEntity<?> removeUserSub(@RequestParam String subId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails=(UserDetails) authentication.getPrincipal();
         String userName = userDetails.getUsername();
         User user = userRepository.findByCredentialsLoginAndIsDeleted(userName, false)
                 .orElseThrow(() -> new EntityNotFoundException("User with this login does not exist"));
+        Long id = Long.parseLong(subId);
         Long orderId=user.getOrders()
                 .stream()
-                .filter(order -> order.getSubscription().getId().equals(Long.parseLong(subId)))
+                .filter(order -> order.getSubscription().getId().equals(id))
                 .findAny()
                 .map(order -> {
                     Payment payment=order.getPayment();
