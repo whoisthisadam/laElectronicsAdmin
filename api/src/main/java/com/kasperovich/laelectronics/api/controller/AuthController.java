@@ -8,6 +8,7 @@ import com.kasperovich.laelectronics.repository.UserRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Slf4j
 @CrossOrigin
 public class AuthController {
 
@@ -34,6 +36,8 @@ public class AuthController {
 
     @PostMapping
     public ResponseEntity<AuthResponse> loginUser(@RequestBody AuthRequest request) {
+
+        log.info("Login request: {}", request);
 
         /*Check login and password*/
         Authentication authenticate = authenticationManager.authenticate(
