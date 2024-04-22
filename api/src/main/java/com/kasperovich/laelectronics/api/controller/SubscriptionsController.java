@@ -4,7 +4,6 @@ import com.kasperovich.laelectronics.api.dto.payment.PaymentCreateDto;
 import com.kasperovich.laelectronics.api.dto.product.DeleteProductDto;
 import com.kasperovich.laelectronics.api.dto.product.SubscriptionCreateDto;
 import com.kasperovich.laelectronics.api.dto.product.SubscriptionGetDto;
-import com.kasperovich.laelectronics.api.dto.users.UserGetDto;
 import com.kasperovich.laelectronics.api.mapping.converters.product.SubscriptionUpdateConverter;
 import com.kasperovich.laelectronics.api.mapping.mappers.SubscriptionListMapper;
 import com.kasperovich.laelectronics.api.mapping.mappers.SubscriptionMapper;
@@ -193,9 +192,7 @@ public class SubscriptionsController {
                 .filter(product -> product.getEditData().getCreationDate().after(from) && product.getEditData().getCreationDate().before(to))
                 .toList();
         List<SubscriptionGetDto> dtos = new ArrayList<>(subscriptionListMapper.toDto(entites));
-        dtos.forEach(x -> {
-            x.setManufacturerName(entites.get(dtos.indexOf(x)).getOrganization().getName());
-        });
+        dtos.forEach(x -> x.setManufacturerName(entites.get(dtos.indexOf(x)).getOrganization().getName()));
         return ResponseEntity.ok(dtos);
     }
 
@@ -321,6 +318,7 @@ public class SubscriptionsController {
             })
     @DeleteMapping("/subscriptions/remove")
     public ResponseEntity<?> removeUserSub(@RequestParam String subId) {
+        log.info("Removing subscription with ID: {}", subId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails=(UserDetails) authentication.getPrincipal();
         String userName = userDetails.getUsername();
