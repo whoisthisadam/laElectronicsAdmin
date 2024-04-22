@@ -6,7 +6,7 @@ node {
         bat 'mvn clean package'
     }
     stage('deploy') {
-        withCredentials([azureServicePrincipal('azure_service_principal')]) {
+        withCredentials([azureServicePrincipal('2bbb6d8e-7697-45f9-8ff5-c6e87cb518f4')]) {
             // Log in to Azure
             bat '''
             az login --service-principal -u %AZURE_CLIENT_ID% -p %AZURE_CLIENT_SECRET% -t %AZURE_TENANT_ID%
