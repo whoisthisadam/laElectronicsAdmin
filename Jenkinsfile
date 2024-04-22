@@ -2,6 +2,14 @@ node {
     stage('init') {
         checkout scm
     }
+    stage('Check Directory') {
+            steps {
+                script {
+                    // Print current working directory
+                    println "Current directory is: ${pwd()}"
+                }
+            }
+    }
     stage('build') {
         bat 'mvn clean package'
     }
