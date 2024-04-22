@@ -23,7 +23,7 @@ node {
             bat 'az config set defaults.spring=avro-api-test'
 
             // Deploy applications
-            bat 'az spring app deploy -n avro-bff --jar-path /api/target/api-1.0.0.jar'
+            bat 'az spring app deploy -n avro-bff --jar-path api/target/api-1.0.0.jar'
             bat 'az logout'
         }
     }
